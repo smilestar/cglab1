@@ -1,0 +1,5 @@
+﻿  SimpleGLUT.cpp
+C:\Users\zxy\Desktop\SimpleGLUT_LAB1\Source\model.h(206): warning C4018: “<”: 有符号/无符号不匹配
+C:\Users\zxy\Desktop\SimpleGLUT_LAB1\Source\model.h(229): warning C4018: “<”: 有符号/无符号不匹配
+  SimpleGLUT.vcxproj -> C:\Users\zxy\Desktop\SimpleGLUT_LAB1\.\Debug\SimpleGLUT.exe
+  SimpleGLUT.vcxproj -> .\Debug\SimpleGLUT.pdb (Full PDB)
