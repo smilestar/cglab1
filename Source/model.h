@@ -23,7 +23,9 @@ class Model {
 public :
 	std::vector< vec3 > verts;
 	std::vector< ModelFace > faces;
-
+	float red=1.0;
+	float green=0.0;
+	float blue=0.0;
 public :
 	Model() {
 	}
@@ -198,20 +200,57 @@ public :
 		}
 	}
 
-	void Translate( const vec3 &offset ) {
+	bool Translate( const vec3 &offset,vec3 min ,vec3 max ) {
+		// translate ...
+		std::vector< vec3 > tmp = verts;
+		bool out=true;
+		for (int i = 0; i < verts.size(); i++)
+		{
+			tmp[i].y = tmp[i].y + offset.y;
+			tmp[i].x = tmp[i].x + offset.x;
+			if (tmp[i].x >= min.x&&tmp[i].x <= max.x&&tmp[i].y >= min.y&&tmp[i].y <= max.y)
+			{
+				out = false;
+				break;
+
+			}
+		}
+		if (out)
+			verts = tmp;
+		//CalcBound(min, max);
+		//if (outbound(min, max))
+		//{
+		//	verts = tmp;
+		//	return false;
+		//}
+		//return true;
+		return out;
+	}
+	bool Translate(const vec3 &offset) {
 		// translate ...
 		std::vector< vec3 > tmp = verts;
 		vec3 max, min;
-
+		bool out = true;
 		for (int i = 0; i < verts.size(); i++)
 		{
-			verts[i].y = verts[i].y + offset.y;
-			verts[i].x = verts[i].x + offset.x;
-		}
-		CalcBound(min, max);
-		if (outbound(min,max))
-			verts = tmp;
+			tmp[i].y = tmp[i].y + offset.y;
+			tmp[i].x = tmp[i].x + offset.x;
 		
+		}
+
+	    verts = tmp;
+		//CalcBound(min, max);
+		//if (outbound(min, max))
+		//{
+		//	verts = tmp;
+		//	return false;
+		//}
+		//return true;
+		return out;
+	}
+	bool collision(vec3 min, vec3 max)
+	{
+
 	}
 	bool outbound(vec3 &min, vec3 &max)
 	{
@@ -220,7 +259,7 @@ public :
 		else
 			return false;
 	}
-	void Rotate( float angle ) {
+	bool Rotate( float angle ) {
 		// rotate ...
 		float m1_x;
 		float m1_y;
@@ -235,7 +274,34 @@ public :
 		}
 		CalcBound(min, max);
 		if (outbound(min, max))
+		{
 			verts = tmp;
+			return false;
+		}
+		return true;
+	}
+	bool Rotate(float angle,vec3 min, vec3 max) {
+		// rotate ...
+		float m1_x;
+		float m1_y;
+		bool out = true;
+		std::vector< vec3 > tmp = verts;
+		for (int i = 0; i < verts.size(); i++)
+		{
+			m1_x = tmp[i].x;
+			m1_y = tmp[i].y;
+			tmp[i].x = m1_x*cos(angle) - m1_y*sin(angle);
+			tmp[i].y = m1_x*sin(angle) + m1_y*cos(angle);
+			if (tmp[i].x >= min.x&&tmp[i].x <= max.x&&tmp[i].y >= min.y&&tmp[i].y <= max.y)
+			{
+				out = false;
+				break;
+
+			}
+		}
+		if (out)
+			verts = tmp;
+		return out;
 	}
 };
 
